@@ -19,12 +19,18 @@ export async function GET(request: NextRequest) {
       dateCondition += ` AND sa.createdAt <= '${endDate}'`
     }
 
+    const currentDate = new Date()
+    const currentMonth = currentDate.getMonth() + 1
+    const currentYear = currentDate.getFullYear()
+
     if (month && year) {
       dateCondition += ` AND EXTRACT(MONTH FROM sa.createdAt) = ${month} AND EXTRACT(YEAR FROM sa.createdAt) = ${year}`
     } else if (month) {
       dateCondition += ` AND EXTRACT(MONTH FROM sa.createdAt) = ${month}`
     } else if (year) {
       dateCondition += ` AND EXTRACT(YEAR FROM sa.createdAt) = ${year}`
+    } else {
+      dateCondition += ` AND EXTRACT(MONTH FROM sa.createdAt) = ${currentMonth} AND EXTRACT(YEAR FROM sa.createdAt) = ${currentYear}`
     }
 
     const queryArticles = `

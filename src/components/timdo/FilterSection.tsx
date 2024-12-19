@@ -112,9 +112,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             variant="outline"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
           >
-            {showAdvancedFilters
-              ? "Ẩn Bộ Lọc Nâng Cao"
-              : "Hiện Bộ Lọc Nâng Cao"}
+            {showAdvancedFilters ? "Ẩn Lọc Nâng Cao" : "Hiện Lọc Nâng Cao"}
           </Button>
         </div>
       </div>

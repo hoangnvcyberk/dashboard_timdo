@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import React, { useEffect, useState } from "react"
 
+import AdminRevenueBreakdown from "./AdminRevenueBreakdown"
 import { ArticlesTable } from "./ArticlesTable"
 import { FilterSection } from "./FilterSection"
-import { convertToVnd } from "@/helpers/convertToVnd"
 
 export interface ArticleData {
   userId: string
@@ -28,7 +28,7 @@ const ArticlesRevenueDashboard: React.FC = () => {
 
   const [pagination, setPagination] = useState<PaginationInfo>({
     page: 1,
-    limit: 5,
+    limit: 6,
     totalCount: 0,
     totalPages: 0,
   })
@@ -64,10 +64,8 @@ const ArticlesRevenueDashboard: React.FC = () => {
   }
   useEffect(() => {
     fetchArticles()
-  }, [])
-  useEffect(() => {
-    fetchArticles()
-  }, [month, year])
+  }, [pagination.page, month, year])
+
   const onApplyFilters = () => {
     fetchArticles()
   }
@@ -78,6 +76,7 @@ const ArticlesRevenueDashboard: React.FC = () => {
           <CardTitle>Doanh Thu Tháng {month}</CardTitle>
         </CardHeader>
         <CardContent>
+          <AdminRevenueBreakdown totalRevenue={totalRevenue} />
           <FilterSection
             startDate={startDate}
             endDate={endDate}
@@ -89,9 +88,6 @@ const ArticlesRevenueDashboard: React.FC = () => {
             setYear={setYear}
             onApplyFilters={onApplyFilters}
           />
-          <div className="mt-8 mb-4 text-2xl font-bold">
-            Tổng tiền: {convertToVnd(totalRevenue)}
-          </div>
           <ArticlesTable
             articles={articles}
             pagination={pagination}
