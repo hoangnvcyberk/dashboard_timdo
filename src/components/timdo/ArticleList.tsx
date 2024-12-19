@@ -36,6 +36,7 @@ const ArticlesRevenueDashboard: React.FC = () => {
   const [startDate, setStartDate] = useState<string>("2024-12-16")
   const [endDate, setEndDate] = useState<string>("")
   const [month, setMonth] = useState<string>("")
+  const [year, setYear] = useState<string>("")
 
   const fetchArticles = async () => {
     try {
@@ -45,6 +46,7 @@ const ArticlesRevenueDashboard: React.FC = () => {
         ...(startDate && { startDate }),
         ...(endDate && { endDate }),
         ...(month && { month }),
+        ...(year && { year }),
       })
       const response = await fetch(`/api/totalRevenue?${params.toString()}`)
       const data = await response.json()
@@ -63,6 +65,9 @@ const ArticlesRevenueDashboard: React.FC = () => {
   useEffect(() => {
     fetchArticles()
   }, [])
+  useEffect(() => {
+    fetchArticles()
+  }, [month, year])
   const onApplyFilters = () => {
     fetchArticles()
   }
@@ -77,9 +82,11 @@ const ArticlesRevenueDashboard: React.FC = () => {
             startDate={startDate}
             endDate={endDate}
             month={month}
+            year={year}
             setStartDate={setStartDate}
             setEndDate={setEndDate}
             setMonth={setMonth}
+            setYear={setYear}
             onApplyFilters={onApplyFilters}
           />
           <div className="mt-8 mb-4 text-2xl font-bold">

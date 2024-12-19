@@ -15,9 +15,11 @@ interface FilterSectionProps {
   startDate: string
   endDate: string
   month: string
+  year: string
   setStartDate: React.Dispatch<React.SetStateAction<string>>
   setEndDate: React.Dispatch<React.SetStateAction<string>>
   setMonth: React.Dispatch<React.SetStateAction<string>>
+  setYear: React.Dispatch<React.SetStateAction<string>>
   onApplyFilters: () => void
 }
 
@@ -25,9 +27,11 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
   startDate,
   endDate,
   month,
+  year,
   setStartDate,
   setEndDate,
   setMonth,
+  setYear,
   onApplyFilters,
 }) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
@@ -35,11 +39,13 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
 
   const defaultStartDate = "2024-12-16"
   const defaultMonth = (new Date().getMonth() + 1).toString()
+  const currentYear = new Date().getFullYear()
 
   const handleResetFilters = () => {
     setStartDate(defaultStartDate)
     setEndDate("")
     setMonth(defaultMonth)
+    setYear(currentYear.toString())
     setIsFilterChanged(false)
   }
 
@@ -47,21 +53,23 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
     if (
       startDate !== defaultStartDate ||
       endDate !== "" ||
-      month !== defaultMonth
+      month !== defaultMonth ||
+      year !== currentYear.toString()
     ) {
       setIsFilterChanged(true)
     } else {
       setIsFilterChanged(false)
     }
-  }, [startDate, endDate, month])
+  }, [startDate, endDate, month, year])
 
   useEffect(() => {
     setMonth(defaultMonth)
-  }, [setMonth])
+    setYear(currentYear.toString())
+  }, [setMonth, setYear])
 
   return (
     <div className="bg-white">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-3">
         <div className="w-60">
           <Label>Tháng</Label>
           <Select value={month} onValueChange={(value) => setMonth(value)}>
@@ -80,6 +88,25 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
           </Select>
         </div>
 
+        <div className="w-60">
+          <Label>Năm</Label>
+          <Select value={year} onValueChange={(value) => setYear(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Chọn năm" />
+            </SelectTrigger>
+            <SelectContent>
+              {[...Array(5)].map((_, index) => {
+                const yearOption = currentYear + index
+                return (
+                  <SelectItem key={yearOption} value={yearOption.toString()}>
+                    {yearOption}
+                  </SelectItem>
+                )
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="flex items-end justify-start">
           <Button
             variant="outline"
@@ -93,7 +120,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
       </div>
 
       {showAdvancedFilters && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-3">
           <div>
             <Label>Ngày Bắt Đầu</Label>
             <Input
@@ -120,18 +147,14 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
             <div className="flex items-end gap-2">
               <Button
                 onClick={onApplyFilters}
-                className={`${
-                  !isFilterChanged ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`${!isFilterChanged ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 Áp Dụng
               </Button>
               <Button
                 variant="secondary"
                 onClick={handleResetFilters}
-                className={`${
-                  !isFilterChanged ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`${!isFilterChanged ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 Làm mới
               </Button>
