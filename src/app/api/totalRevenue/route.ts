@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const limit = Number(searchParams.get("limit")) || 10
     const offset = (page - 1) * limit
 
-    const startDate = searchParams.get("startDate") || "2024-12-16"
+    const startDate = searchParams.get("startDate") || "2024-12-23"
     const endDate = searchParams.get("endDate")
 
     const month = searchParams.get("month")

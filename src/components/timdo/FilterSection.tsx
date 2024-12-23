@@ -37,7 +37,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
   const [isFilterChanged, setIsFilterChanged] = useState(false)
 
-  const defaultStartDate = "2024-12-16"
+  const defaultStartDate = "2024-12-23"
   const defaultMonth = (new Date().getMonth() + 1).toString()
   const currentYear = new Date().getFullYear()
 
